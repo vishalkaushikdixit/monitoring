@@ -10,7 +10,7 @@ while true;do
             --url 'smtps://smtp.gmail.com:465' \
             --user 'username@gmail.com:password' \
             --mail-from 'username@gmail.com' \
-            --mail-rcpt 'john@example.com' \
+            --mail-rcpt 'to@example.com' \
             --upload-file disk_usage.txt
 
     fi
