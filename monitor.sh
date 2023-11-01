@@ -5,30 +5,41 @@ while true;do
     Cpu=${cpu%.*}
     ram=$(free | grep Mem | awk '{print $3/$2 * 100.0}')
     Ram=${ram%.*}
-    if [ "$disk" -ge "80" ]; then
-        curl --ssl-reqd \
-            --url 'smtps://smtp.gmail.com:465' \
-            --user 'username@gmail.com:password' \
-            --mail-from 'username@gmail.com' \
-            --mail-rcpt 'to@example.com' \
-            --upload-file disk_usage.txt
+
+    message_for_cpu="Current CPU Usage: $Cpu"
+
+    message_for_ram="Current RAM Usage: $Ram"
+
+    message_for_disk="Current DISK Usage: $disk"
+
+    if [ "$disk" -ge "10" ]; then
+
+        curl --url 'smtps://smtp.example.com:465' --ssl-reqd --mail-from 'mail@example.com' --mail-rcpt 'to@example.com' --user 'user@example.com:password' --upload-file - <<EOF
+Subject: Disk Usage
+
+
+Disk utilization is high please check. $message_for_disk 
+EOF
+
 
     fi
     if [ "$Cpu" -ge "80" ];then
-        curl --ssl-reqd \
-            --url 'smtps://smtp.gmail.com:465' \
-            --user 'username@gmail.com:password' \
-            --mail-from 'username@gmail.com' \
-            --mail-rcpt 'to@example.com' \
-            --upload-file cpu_usage.txt
+        curl --url 'smtps://smtp.example.com:465' --ssl-reqd --mail-from 'mail@example.com' --mail-rcpt 'to@example.com' --user 'user@example.com:password' --upload-file - <<EOF
+Subject: CPU Usage
+
+
+Disk utilization is high please check. $message_for_cpu
+EOF
+
     fi
     if [ "$Ram" -ge "80" ];then
-        curl --ssl-reqd \
-            --url 'smtps://smtp.gmail.com:465' \
-            --user 'username@gmail.com:password' \
-            --mail-from 'username@gmail.com' \
-            --mail-rcpt 'to@example.com' \
-            --upload-file ram_usage.txt
+        curl --url 'smtps://smtp.example.com:465' --ssl-reqd --mail-from 'mail@example.com' --mail-rcpt 'to@example.com' --user 'user@example.com:password' --upload-file - <<EOF
+Subject: RAM Usage
+
+
+Disk utilization is high please check. $message_for_ram
+EOF
+
         fi
     sleep 60
 done
